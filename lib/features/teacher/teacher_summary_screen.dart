@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
 
-import '../../core/app_colors.dart';
-import '../../core/app_routes.dart';
+import '../../core/widgets/app_bottom_nav.dart';
+import 'students_tab.dart';
+import 'teacher_menu_tab.dart';
+import 'teacher_summary_tab.dart';
+import 'validation_tab.dart';
 
-/// Placeholder Layar 08 - Ringkasan Wali Kelas (dibangun di Tahap 6).
-class TeacherSummaryScreen extends StatelessWidget {
+/// Kerangka halaman utama wali kelas: bottom nav + 4 tab.
+class TeacherSummaryScreen extends StatefulWidget {
   const TeacherSummaryScreen({super.key});
 
   @override
+  State<TeacherSummaryScreen> createState() => _TeacherSummaryScreenState();
+}
+
+class _TeacherSummaryScreenState extends State<TeacherSummaryScreen> {
+  int _index = 0;
+
+  static const _items = [
+    NavItem(Icons.dashboard_outlined, 'Ringkas'),
+    NavItem(Icons.groups_outlined, 'Siswa'),
+    NavItem(Icons.fact_check_outlined, 'Validasi'),
+    NavItem(Icons.menu, 'Menu'),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ringkasan Kelas'),
-        backgroundColor: AppColors.background,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => Navigator.of(context)
-                .pushReplacementNamed(AppRoutes.login),
-          ),
-        ],
+    return PopScope(
+      canPop: _index == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) setState(() => _index = 0);
+      },
+      child: Scaffold(
+        body: IndexedStack(
+          index: _index,
+          children: [
+            TeacherSummaryTab(onOpenValidation: () => setState(() => _index = 2)),
+            const StudentsTab(),
+            const ValidationTab(),
+            const TeacherMenuTab(),
+          ],
+        ),
+        bottomNavigationBar: AppBottomNav(
+          items: _items,
+          index: _index,
+          onChanged: (i) => setState(() => _index = i),
+        ),
       ),
-      body: const Center(child: Text('Layar 08 · Ringkasan Wali Kelas')),
     );
   }
 }

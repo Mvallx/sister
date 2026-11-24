@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'core/app_routes.dart';
@@ -14,7 +15,7 @@ class HadirkuApp extends StatelessWidget {
       title: 'Hadirku',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash, // cek sesi dulu
       routes: AppRoutes.routes,
     );
   }

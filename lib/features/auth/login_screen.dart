@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/app_colors.dart';
 import '../../core/app_routes.dart';
+import '../../core/session_service.dart';
 import 'auth_service.dart';
 import 'widgets/brand_logo.dart';
 import 'widgets/hadirku_text_field.dart';
@@ -58,10 +59,19 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final route = result.role == UserRole.siswa
-        ? AppRoutes.studentHome // Layar 02
-        : AppRoutes.teacherSummary; // Layar 08
-    Navigator.of(context).pushReplacementNamed(route);
+    // 1) Simpan sesi supaya app berikutnya langsung ke Beranda.
+    await SessionService.save(
+      userId: _idController.text.trim(),
+      role: result.role!,
+    );
+    if (!mounted) return;
+
+    // 2) Hapus SELURUH stack (termasuk Login), lalu buka halaman utama.
+    //    Tombol/gestur back tidak akan kembali ke Login.
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRoutes.homeFor(result.role!), // Layar 02 atau Layar 08
+      (route) => false,
+    );
   }
 
   @override

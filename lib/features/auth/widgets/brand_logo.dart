@@ -2,30 +2,22 @@ import 'package:flutter/material.dart';
 
 import '../../../core/app_colors.dart';
 
+/// Logo Hadirku (dipakai di Login dan Splash).
 class BrandLogo extends StatelessWidget {
-  const BrandLogo({super.key});
+  const BrandLogo({super.key, this.size = 84});
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 64,
-          height: 64,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Text(
-            'H',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+        Image.asset(
+          'assets/icon/logo.png',
+          width: size,
+          height: size,
+          filterQuality: FilterQuality.high,
         ),
         const SizedBox(height: 12),
         const Text(
